@@ -6,7 +6,7 @@ if(isset($_GET['delete']) && $_GET['delete'] != '')
 {
     $QueryString ="DELETE FROM student where id = '".$_GET['delete']."'";
 	$QueryStringDelete = mysqli_query($conn,$QueryString);
-    header("location:read.php");
+    header("location:index.php");
 }
 
  ?>
@@ -79,10 +79,9 @@ if(isset($_GET['delete']) && $_GET['delete'] != '')
     $sql ="SELECT * FROM student";
     if(isset($_POST['searchbtn'])){
         $searchData = $_POST['search'];
-        $sql="SELECT * FROM student WHERE ('Name' LIKE '%".$searchData."%' ||'Email' LIKE '%".$searchData."%' || 'Mobile' LIKE '%".$searchData."%') ";
+        $sql="SELECT * FROM student WHERE(Name LIKE '%".$searchData."%' ||Email LIKE '%".$searchData."%' || Mobile LIKE '%".$searchData."%') ";
     }
 	$QueryString = mysqli_query($conn, $sql);
-    echo mysqli_num_rows($QueryString);
 	$i = 1;
     if( mysqli_num_rows($QueryString)>0){
 	while($ResultString = mysqli_fetch_array($QueryString)){
@@ -98,7 +97,7 @@ if(isset($_GET['delete']) && $_GET['delete'] != '')
       <td><?php echo $ResultString['Created_date']; ?></td>
       <td>
           <a href="insert.php?edited=<?php echo $ResultString['id'];?>" class="btn btn-primary" name="studentid">edit</a>
-          <a href="read.php?delete=<?php echo $ResultString['id']; ?>" class="btn btn-danger">delete</a>
+          <a href="index.php?delete=<?php echo $ResultString['id']; ?>" class="btn btn-danger">delete</a>
       </td>
     </tr>
     <?php $i++; } } else{?>

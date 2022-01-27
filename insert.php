@@ -24,7 +24,7 @@ if(isset($_POST['submitbtn']))
 	  move_uploaded_file($filetmpname, $destinationfolder);
     $QueryString = "INSERT INTO student(Name,Email,Mobile,Password,Files,Is_status,Created_date) VALUES ('".$name."', '".$email."', '".$mobile."', '".$pass."', '".$mynewfilename."', '1', NOW())";
 	  if(mysqli_query($conn, $QueryString)){
-	  	header("location:read.php?msg='Succ'");
+	  	header("location:index.php?msg='Succ'");
       echo "done";
 	  }else{
       // echo $conn->connect_errno;
@@ -39,14 +39,19 @@ if(isset($_GET['edited']) && $_GET['edited'] != '')
 }
 
 if(isset($_POST['updatebtn'])){
-	echo $name = $_POST['Name'];
-	echo $email = $_POST['Email'];
-	echo $mobile = $_POST['Mobile'];
-	$QueryString = "UPDATE student SET Name='".$name."',Email='".$email."',Mobile='".$mobile."' WHERE (id = '".$_GET['edited']."')";
+  $str=$_SERVER['HTTP_REFERER'];
+  $temp = explode( "?", $str );
+  $result = explode( "=", $temp['1'] );
+  $id=$result['1'];
+  // print_r($_POST);die;
+	$name = $_POST['uname'];
+	$email = $_POST['email'];
+	$mobile = $_POST['mobile'];
+	$QueryString = "UPDATE student SET Name='".$name."',Email='".$email."',Mobile='".$mobile."' WHERE (id = '".$id."')";
 	if(mysqli_query($conn, $QueryString)){
-		header("location:insert.php?msg='update'");
+		header("location:index.php?msg='update'");
 	}else{
-		header("location:insert.php?msg='err'");
+		header("location:index.php?msg='err'");
 	}
 }
 ?>
@@ -116,7 +121,9 @@ if(isset($_POST['updatebtn'])){
   </div>
   <button type="submit" class="btn btn-danger" name="submitbtn">Submit</button>
   <?php } else{ ?>
+    <input type="hidden" class="form-control" id="edit_id" name="edit_id" value="<?Php echo $_GET['edited'] ; ?>" >
   <button type="submit" class="btn btn-danger" name="updatebtn">Updated</button>
+  
   <?php } ?>
 </form>
 </div>
